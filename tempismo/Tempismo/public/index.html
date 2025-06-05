@@ -155,27 +155,26 @@
             }
         }
 
-        async function saveScore(name, score) {
-            try {
-                await fetch('/api/scores', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ name, score })
-                });
-                updateScoreboard();
-            } catch (error) {
-                console.error('Errore nel salvare il punteggio:', error);
-            }
-        }
+const SHEET_API_URL = 'https://script.google.com/macros/s/.../exec';
+
+async function saveScore(name, score) {
+    try {
+        await fetch(SHEET_API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, score })
+        });
+        updateScoreboard();
+    } catch (error) {
+        console.error('Errore nel salvare il punteggio:', error);
+    }
+}
 
 async function updateScoreboard() {
     try {
-        const response = await fetch('scores.json'); // <-- Cambia qui il percorso
+        const response = await fetch(SHEET_API_URL);
         const scores = await response.json();
         const scoresList = document.getElementById('scoresList');
-        
         scoresList.innerHTML = scores
             .map((score, index) => `
                 <div class="score-item">
@@ -187,9 +186,6 @@ async function updateScoreboard() {
         console.error('Errore nel caricare i punteggi:', error);
     }
 }
-
-// Carica la classifica all'avvio
-updateScoreboard();
     </script>
 </body>
 </html>
