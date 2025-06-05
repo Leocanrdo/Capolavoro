@@ -170,26 +170,26 @@
             }
         }
 
-        async function updateScoreboard() {
-            try {
-                const response = await fetch('/api/scores');
-                const scores = await response.json();
-                const scoresList = document.getElementById('scoresList');
-                
-                scoresList.innerHTML = scores
-                    .map((score, index) => `
-                        <div class="score-item">
-                            ${index + 1}. ${score.name}: ${score.score}ms
-                        </div>
-                    `)
-                    .join('');
-            } catch (error) {
-                console.error('Errore nel caricare i punteggi:', error);
-            }
-        }
+async function updateScoreboard() {
+    try {
+        const response = await fetch('scores.json'); // <-- Cambia qui il percorso
+        const scores = await response.json();
+        const scoresList = document.getElementById('scoresList');
+        
+        scoresList.innerHTML = scores
+            .map((score, index) => `
+                <div class="score-item">
+                    ${index + 1}. ${score.name}: ${score.score}ms
+                </div>
+            `)
+            .join('');
+    } catch (error) {
+        console.error('Errore nel caricare i punteggi:', error);
+    }
+}
 
-        // Carica la classifica all'avvio
-        updateScoreboard();
+// Carica la classifica all'avvio
+updateScoreboard();
     </script>
 </body>
 </html>
